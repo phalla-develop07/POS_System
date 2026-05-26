@@ -11,9 +11,9 @@ function validateCreateCategory(req, _res, next) {
 }
 
 function validateUpdateCategory(req, _res, next) {
-  const { name, description, image, isActive } = req.body || {};
+  const { name, description, isActive } = req.body || {};
 
-  if (name === undefined && description === undefined && image === undefined && isActive === undefined) {
+  if (name === undefined && description === undefined && isActive === undefined) {
     return next(new AppError('At least one field is required', 400));
   }
 

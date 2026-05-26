@@ -19,11 +19,6 @@ const CategorySchema = new EntitySchema({
       length: 255,
       nullable: true
     },
-    image: {
-      type: String,
-      length: 255,
-      nullable: true
-    },
     isActive: {
       name: 'is_active',
       type: Boolean,

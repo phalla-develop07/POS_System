@@ -6,7 +6,7 @@ class CategoryService {
     this.categoryRepository = categoryRepository;
   }
 
-  async create(name, description = null, image = null) {
+  async create(name, description = null) {
     const existingCategory = await this.categoryRepository.findByName(name);
 
     if (existingCategory) {
@@ -15,8 +15,7 @@ class CategoryService {
 
     const category = await this.categoryRepository.createCategory({
       name,
-      description,
-      image
+      description
     });
 
     return category;

@@ -8,8 +8,8 @@ class CategoryController {
 
   async create(req, res, next) {
     try {
-      const { name, description, image } = req.body;
-      const result = await this.categoryService.create(name, description, image);
+      const { name, description } = req.body;
+      const result = await this.categoryService.create(name, description);
       return successResponse(res, result, 'Category created', 201);
     } catch (error) {
       return next(error);
@@ -38,11 +38,10 @@ class CategoryController {
   async update(req, res, next) {
     try {
       const { id } = req.params;
-      const { name, description, image, isActive } = req.body;
+      const { name, description, isActive } = req.body;
       const result = await this.categoryService.update(Number(id), {
         name,
         description,
-        image,
         isActive
       });
       return successResponse(res, result, 'Category updated');
