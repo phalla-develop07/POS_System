@@ -1,19 +1,20 @@
-require('dotenv').config();
 require('reflect-metadata');
-
 const { DataSource } = require('typeorm');
+const { env } = require('../config/env');
+const { RoleSchema } = require('../modules/auth/models/Role');
+const { UserSchema } = require('../modules/auth/models/User');
 const { CategorySchema } = require('../modules/category/models/Category');
 
 const AppDataSource = new DataSource({
   type: 'mysql',
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: env.DB_HOST,
+  port: env.DB_PORT,
+  username: env.DB_USER,
+  password: env.DB_PASSWORD,
+  database: env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [CategorySchema]
+  entities: [RoleSchema, UserSchema, CategorySchema]
 });
 
 module.exports.AppDataSource = AppDataSource;

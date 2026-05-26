@@ -1,8 +1,8 @@
 const { EntitySchema } = require('typeorm');
 
-const CategorySchema = new EntitySchema({
-  name: 'Category',
-  tableName: 'categories',
+const RoleSchema = new EntitySchema({
+  name: 'Role',
+  tableName: 'roles',
   columns: {
     id: {
       type: Number,
@@ -11,23 +11,13 @@ const CategorySchema = new EntitySchema({
     },
     name: {
       type: String,
-      length: 100,
+      length: 50,
       unique: true
     },
     description: {
       type: String,
       length: 255,
       nullable: true
-    },
-    image: {
-      type: String,
-      length: 255,
-      nullable: true
-    },
-    isActive: {
-      name: 'is_active',
-      type: Boolean,
-      default: true
     },
     createdAt: {
       name: 'created_at',
@@ -42,4 +32,4 @@ const CategorySchema = new EntitySchema({
   }
 });
 
-module.exports.CategorySchema = CategorySchema;
+module.exports.RoleSchema = RoleSchema;
