@@ -1,32 +1,23 @@
 const { EntitySchema } = require('typeorm');
 
-const UserSchema = new EntitySchema({
-  name: 'User',
-  tableName: 'users',
+const RoleSchema = new EntitySchema({
+  name: 'Role',
+  tableName: 'roles',
   columns: {
     id: {
       type: Number,
       primary: true,
       generated: true
     },
-    email: {
+    name: {
       type: String,
-      length: 150,
+      length: 50,
       unique: true
     },
-    passwordHash: {
-      name: 'password_hash',
+    description: {
       type: String,
-      length: 255
-    },
-    role: {
-      type: 'enum',
-      enum: ['ADMIN', 'CASHIER', 'MANAGER'],
-      default: 'CASHIER'
-    },
-    isActive: {
-      type: Boolean,
-      default: true
+      length: 255,
+      nullable: true
     },
     createdAt: {
       name: 'created_at',
@@ -41,4 +32,4 @@ const UserSchema = new EntitySchema({
   }
 });
 
-module.exports.UserSchema = UserSchema;
+module.exports.RoleSchema = RoleSchema;
