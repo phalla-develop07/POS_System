@@ -21,7 +21,7 @@ class AuthService {
     const user = await this.authRepository.createUser({
       email,
       passwordHash,
-      role: Roles.CASHIER
+      role: Roles.EMPLOYEE
     });
 
     return {

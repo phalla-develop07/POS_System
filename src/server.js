@@ -1,16 +1,21 @@
 const app = require('./app');
 const { AppDataSource } = require('./database/data-source');
 const { seedRoles } = require('./database/seedRoles');
+const { seedPermissions } = require('./database/seedPermissions');
 const { env } = require('./config/env');
 
 async function bootstrap() {
   try {
     await AppDataSource.initialize();
     const insertedRoles = await seedRoles();
+    const insertedPermissions = await seedPermissions();
     console.log('Database connected successfully');
     console.log('Tables synchronized from entities');
     if (insertedRoles > 0) {
       console.log(`Seeded ${insertedRoles} default role(s)`);
+    }
+    if (insertedPermissions > 0) {
+      console.log(`Seeded ${insertedPermissions} default permission(s)`);
     }
 
     const server = app.listen(env.PORT, () => {

@@ -1,17 +1,11 @@
 const { AppDataSource } = require('./data-source');
-const { Roles } = require('../constants/roles');
+const { RoleDescriptions, RoleList } = require('../constants/roles');
 const { RoleSchema } = require('../modules/auth/models/Role');
 
-const defaultRoles = [
-  {
-    name: Roles.ADMIN,
-    description: 'Administrator'
-  },
-  {
-    name: Roles.EMPLOYEE,
-    description: 'Employee'
-  }
-];
+const defaultRoles = RoleList.map((name) => ({
+  name,
+  description: RoleDescriptions[name] || null
+}));
 
 async function seedRoles() {
   const roleRepository = AppDataSource.getRepository(RoleSchema);

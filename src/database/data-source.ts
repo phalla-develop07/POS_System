@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 import { env } from '../config/env';
 import { RoleSchema } from '../modules/auth/models/Role';
 import { UserSchema } from '../modules/auth/models/User';
+import { PermissionSchema } from '../modules/permissions/models/Permission';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -13,5 +14,5 @@ export const AppDataSource = new DataSource({
   database: env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [RoleSchema, UserSchema]
+  entities: [RoleSchema, UserSchema, PermissionSchema]
 });
