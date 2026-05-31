@@ -3,6 +3,7 @@ const { DataSource } = require('typeorm');
 const { env } = require('../config/env');
 const { RoleSchema } = require('../modules/auth/models/Role');
 const { UserSchema } = require('../modules/auth/models/User');
+const { ProductSchema } = require('../modules/product/models/Product');
 
 const AppDataSource = new DataSource({
   type: 'mysql',
@@ -13,7 +14,7 @@ const AppDataSource = new DataSource({
   database: env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [RoleSchema, UserSchema]
+  entities: [RoleSchema, UserSchema, ProductSchema]
 });
 
 module.exports.AppDataSource = AppDataSource;
