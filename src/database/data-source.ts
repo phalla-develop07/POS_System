@@ -4,7 +4,8 @@ import { env } from '../config/env';
 import { RoleSchema } from '../modules/auth/models/Role';
 import { UserSchema } from '../modules/auth/models/User';
 import { PermissionSchema } from '../modules/permissions/models/Permission';
-import { CategorySchema } from '../modules/category/models/Category.js';
+// import { CategorySchema } from '../modules/category/models/Category.js';
+import { CategorySchema } from '../modules/category/models/Category';
 import { ProductSchema } from '../modules/inventory/models/Product';
 import { InventoryTransactionSchema } from '../modules/inventory/models/InventoryTransaction';
 

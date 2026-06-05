@@ -108,7 +108,6 @@ module.exports.getDefaultPermissionPayloads = () => module.exports.PermissionLis
 module.exports.RolePermissions = {
   [Roles.ADMIN]: module.exports.PermissionList,
   [Roles.MANAGER]: [
-    module.exports.Permissions.VIEW_USERS,
     module.exports.Permissions.MANAGE_PRODUCTS,
     module.exports.Permissions.MANAGE_SALES,
     module.exports.Permissions.VIEW_REPORTS,
@@ -127,8 +126,4 @@ module.exports.RolePermissions = {
     module.exports.Permissions.VIEW_INVENTORY,
     module.exports.Permissions.VIEW_ORDERS
   ]
-  MANAGE_USERS: 'MANAGE_USERS',
-  MANAGE_PRODUCTS: 'MANAGE_PRODUCTS',
-  MANAGE_SALES: 'MANAGE_SALES',
-  VIEW_REPORTS: 'VIEW_REPORTS'
 };

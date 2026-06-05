@@ -7,13 +7,17 @@ const { env } = require('./config/env');
 async function bootstrap() {
   try {
     await AppDataSource.initialize();
+
     const insertedRoles = await seedRoles();
     const insertedPermissions = await seedPermissions();
+
     console.log('Database connected successfully');
     console.log('Tables synchronized from entities');
+
     if (insertedRoles > 0) {
       console.log(`Seeded ${insertedRoles} default role(s)`);
     }
+
     if (insertedPermissions > 0) {
       console.log(`Seeded ${insertedPermissions} default permission(s)`);
     }
@@ -35,14 +39,6 @@ async function bootstrap() {
     });
   } catch (error) {
     console.error('Failed to start server:', error);
-    console.log('Database connected successfully');
-    console.log(' Tables synchronized from entities');
-    
-    app.listen(env.PORT, () => {
-      console.log(`Server is running on port ${env.PORT}`);
-    });
-  } catch (error) {
-    console.error('Failed to start server:', error.message);
     process.exit(1);
   }
 }
