@@ -9,6 +9,12 @@ const ProductSchema = new EntitySchema({
       primary: true,
       generated: true
     },
+    sku: {
+      type: String,
+      length: 100,
+      unique: true,
+      nullable: true
+    },
     name: {
       type: String,
       length: 150
@@ -23,6 +29,20 @@ const ProductSchema = new EntitySchema({
       precision: 10,
       scale: 2,
       default: 0
+    },
+    stock: {
+      type: 'int',
+      default: 0
+    },
+    lowStockThreshold: {
+      name: 'low_stock_threshold',
+      type: 'int',
+      default: 5
+    },
+    isActive: {
+      name: 'is_active',
+      type: Boolean,
+      default: true
     },
     imageUrl: {
       name: 'image_url',

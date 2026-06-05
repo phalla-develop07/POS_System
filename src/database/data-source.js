@@ -9,16 +9,38 @@ const { CategorySchema } = require('../modules/category/models/Category');
 const { InventoryTransactionSchema } = require('../modules/inventory/models/InventoryTransaction');
 const { InventoryLogSchema } = require('../modules/inventory/models/InventoryLog');
 
-const AppDataSource = new DataSource({
-  type: 'mysql',
-  host: env.DB_HOST,
-  port: env.DB_PORT,
-  username: env.DB_USER,
-  password: env.DB_PASSWORD,
-  database: env.DB_NAME,
+const entities = [
+  RoleSchema,
+  UserSchema,
+  CategorySchema,
+  ProductSchema,
+  PermissionSchema,
+  InventoryTransactionSchema,
+  InventoryLogSchema
+];
+
+const commonOptions = {
   synchronize: true,
   logging: false,
-  entities: [RoleSchema, UserSchema, CategorySchema, ProductSchema, PermissionSchema, InventoryTransactionSchema, InventoryLogSchema]
-});
+  entities
+};
+
+const dataSourceOptions = env.DB_TYPE === 'sqlite'
+  ? {
+      ...commonOptions,
+      type: 'sqlite',
+      database: env.DB_PATH
+    }
+  : {
+      ...commonOptions,
+      type: 'mysql',
+      host: env.DB_HOST,
+      port: env.DB_PORT,
+      username: env.DB_USER,
+      password: env.DB_PASSWORD,
+      database: env.DB_NAME
+    };
+
+const AppDataSource = new DataSource(dataSourceOptions);
 
 module.exports.AppDataSource = AppDataSource;

@@ -85,8 +85,8 @@ class InventoryRepository {
     return this.productRepository
       .createQueryBuilder('product')
       .where('product.isActive = :isActive', { isActive: true })
-      .andWhere('product.currentStock <= product.lowStockThreshold')
-      .orderBy('product.currentStock', 'ASC')
+      .andWhere('product.stock <= product.lowStockThreshold')
+      .orderBy('product.stock', 'ASC')
       .addOrderBy('product.updatedAt', 'DESC')
       .getMany();
   }

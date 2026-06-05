@@ -8,10 +8,8 @@ class AuthController {
 
   async register(req, res, next) {
     try {
-      // const { email, password, role } = req.body;
-      // const result = await this.authService.register(email, password, role);
-      const { email, password } = req.body;
-      const result = await this.authService.register(email, password);
+      const { email, password, role } = req.body;
+      const result = await this.authService.register(email, password, role);
       return successResponse(res, result, 'User registered', 201);
     } catch (error) {
       return next(error);

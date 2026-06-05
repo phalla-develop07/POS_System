@@ -20,8 +20,7 @@ const UserSchema = new EntitySchema({
       length: 255
     },
     role: {
-      type: 'enum',
-      enum: ['ADMIN', 'EMPLOYEE', 'CASHIER', 'MANAGER'],
+      type: String,
       default: 'CASHIER'
     },
     isActive: {

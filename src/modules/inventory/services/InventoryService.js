@@ -11,10 +11,14 @@ class InventoryService {
   }
 
   normalizeProduct(product) {
+    const stock = Number(product.stock || 0);
+    const lowStockThreshold = Number(product.lowStockThreshold || 0);
+
     return {
       ...product,
-      stockStatus: product.currentStock <= product.lowStockThreshold ? 'LOW_STOCK' : 'IN_STOCK',
-      isLowStock: product.currentStock <= product.lowStockThreshold
+      currentStock: stock,
+      stockStatus: stock <= lowStockThreshold ? 'LOW_STOCK' : 'IN_STOCK',
+      isLowStock: stock <= lowStockThreshold
     };
   }
 
@@ -138,7 +142,7 @@ class InventoryService {
           name,
           sku,
           description: description || null,
-          currentStock: initialStock,
+          stock: initialStock,
           lowStockThreshold,
           isActive: true
         })
@@ -270,7 +274,7 @@ class InventoryService {
         throw new AppError('Product not found', 404);
       }
 
-      const previousStock = product.currentStock;
+      const previousStock = product.stock;
       const newStock = movementType === 'IN'
         ? previousStock + quantity
         : previousStock - quantity;
@@ -279,7 +283,7 @@ class InventoryService {
         throw new AppError('Insufficient stock for this update', 400);
       }
 
-      product.currentStock = newStock;
+      product.stock = newStock;
       const savedProduct = await productRepository.save(product);
 
       const transaction = await transactionRepository.save(

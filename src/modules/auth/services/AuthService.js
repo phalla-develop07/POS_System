@@ -2,7 +2,6 @@ const { AppError } = require('../../../core/errors/AppError');
 const { comparePassword, hashPassword } = require('../../../core/utils/hashPassword');
 const { generateToken } = require('../../../core/utils/generateToken');
 const { RoleList, Roles } = require('../../../constants/roles');
-// const { Roles } = require('../../../constants/roles');
 const { AuthRepository } = require('../repositories/AuthRepository');
 
 class AuthService {

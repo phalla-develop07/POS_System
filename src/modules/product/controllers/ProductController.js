@@ -8,6 +8,22 @@ class ProductController {
     this.productService = productService;
   }
 
+  getImagePath(imageUrl) {
+    return path.join(__dirname, '../../../', imageUrl.replace(/^\//, ''));
+  }
+
+  deleteImageIfExists(imageUrl) {
+    if (!imageUrl) {
+      return;
+    }
+
+    const imagePath = this.getImagePath(imageUrl);
+
+    if (fs.existsSync(imagePath)) {
+      fs.unlinkSync(imagePath);
+    }
+  }
+
   async list(req, res, next) {
     try {
       const products = await this.productService.listProducts();
@@ -28,13 +44,14 @@ class ProductController {
 
   async create(req, res, next) {
     try {
-      const { name, description, price } = req.body;
+      const { name, description, price, stock } = req.body;
       const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
       const product = await this.productService.createProduct({
         name,
         description,
         price: Number(price),
+        stock: Number(stock || 0),
         imageUrl
       });
 
@@ -48,25 +65,17 @@ class ProductController {
     try {
       const productId = Number(req.params.id);
       const existingProduct = await this.productService.getProduct(productId);
-      const { name, description, price } = req.body;
+      const { name, description, price, stock } = req.body;
       const updateData = {
         name: name ?? existingProduct.name,
         description: description ?? existingProduct.description,
-        price: price !== undefined && price !== '' ? Number(price) : existingProduct.price
+        price: price !== undefined && price !== '' ? Number(price) : existingProduct.price,
+        stock: stock !== undefined && stock !== '' ? Number(stock) : existingProduct.stock
       };
 
       if (req.file) {
         updateData.imageUrl = `/uploads/${req.file.filename}`;
-        if (existingProduct.imageUrl) {
-          const currentImagePath = path.join(
-            __dirname,
-            '../../../',
-            existingProduct.imageUrl.replace(/^\//, '')
-          );
-          if (fs.existsSync(currentImagePath)) {
-            fs.unlinkSync(currentImagePath);
-          }
-        }
+        this.deleteImageIfExists(existingProduct.imageUrl);
       }
 
       const product = await this.productService.updateProduct(productId, updateData);
@@ -80,17 +89,7 @@ class ProductController {
     try {
       const productId = Number(req.params.id);
       const existingProduct = await this.productService.getProduct(productId);
-
-      if (existingProduct.imageUrl) {
-        const currentImagePath = path.join(
-          __dirname,
-          '../../../',
-          existingProduct.imageUrl.replace(/^\//, '')
-        );
-        if (fs.existsSync(currentImagePath)) {
-          fs.unlinkSync(currentImagePath);
-        }
-      }
+      this.deleteImageIfExists(existingProduct.imageUrl);
 
       const product = await this.productService.deleteProduct(productId);
       return successResponse(res, product, 'Product deleted successfully');
