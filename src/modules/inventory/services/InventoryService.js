@@ -88,6 +88,22 @@ class InventoryService {
     };
   }
 
+  parseDate(value, label = 'date') {
+    const normalized = this.normalizeString(value);
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(normalized)) {
+      throw new AppError(`Invalid ${label}`, 400);
+    }
+
+    const date = new Date(`${normalized}T00:00:00`);
+
+    if (Number.isNaN(date.getTime())) {
+      throw new AppError(`Invalid ${label}`, 400);
+    }
+
+    return normalized;
+  }
+
   async listProducts() {
     const products = await this.inventoryRepository.findAllProducts();
     return products.map((product) => this.normalizeProduct(product));
@@ -367,6 +383,80 @@ class InventoryService {
     });
 
     return logs.map((log) => this.normalizeLog(log));
+  }
+
+  async getDailyReport(query = {}) {
+    const reportDate = query.date ? this.parseDate(query.date, 'report date') : this.parseDate(new Date().toISOString().slice(0, 10), 'report date');
+
+    const [transactions, logs, products, lowStockProducts] = await Promise.all([
+      this.inventoryRepository.findTransactionsByDate(reportDate),
+      this.inventoryRepository.findLogsByDate(reportDate),
+      this.inventoryRepository.findAllProducts(),
+      this.inventoryRepository.findLowStockProducts()
+    ]);
+
+    const summary = {
+      stockInCount: 0,
+      stockOutCount: 0,
+      stockInQuantity: 0,
+      stockOutQuantity: 0,
+      createProductCount: 0,
+      updateProductCount: 0,
+      otherActionCount: 0
+    };
+
+    for (const transaction of transactions) {
+      if (transaction.movementType === 'IN') {
+        summary.stockInCount += 1;
+        summary.stockInQuantity += transaction.quantity;
+      }
+
+      if (transaction.movementType === 'OUT') {
+        summary.stockOutCount += 1;
+        summary.stockOutQuantity += transaction.quantity;
+      }
+    }
+
+    for (const log of logs) {
+      if (log.actionType === 'CREATE_PRODUCT') {
+        summary.createProductCount += 1;
+      } else if (log.actionType === 'UPDATE_PRODUCT') {
+        summary.updateProductCount += 1;
+      } else {
+        summary.otherActionCount += 1;
+      }
+    }
+
+    return {
+      reportDate,
+      summary: {
+        totalProducts: products.length,
+        activeProducts: products.filter((product) => product.isActive).length,
+        lowStockProducts: lowStockProducts.length,
+        inventoryActions: logs.length,
+        stockMovements: transactions.length,
+        ...summary
+      },
+      lowStockItems: lowStockProducts.map((product) => this.normalizeProduct(product)),
+      transactions: transactions.map((transaction) => ({
+        id: transaction.id,
+        movementType: transaction.movementType,
+        quantity: transaction.quantity,
+        previousStock: transaction.previousStock,
+        newStock: transaction.newStock,
+        reason: transaction.reason,
+        reference: transaction.reference,
+        createdAt: transaction.createdAt,
+        product: transaction.product
+          ? {
+              id: transaction.product.id,
+              sku: transaction.product.sku,
+              name: transaction.product.name
+            }
+          : null
+      })),
+      logs: logs.map((log) => this.normalizeLog(log))
+    };
   }
 }
 

@@ -89,6 +89,15 @@ class InventoryController {
       return next(error);
     }
   }
+
+  async dailyReport(req, res, next) {
+    try {
+      const report = await this.inventoryService.getDailyReport(req.query || {});
+      return successResponse(res, report, 'Daily inventory report retrieved');
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 module.exports.InventoryController = InventoryController;

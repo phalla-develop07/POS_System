@@ -19,6 +19,7 @@ router.get('/products/:id', inventoryController.getProduct.bind(inventoryControl
 router.get('/low-stock', inventoryController.listLowStockAlerts.bind(inventoryController));
 router.get('/history', inventoryController.listHistory.bind(inventoryController));
 router.get('/logs', inventoryController.listLogs.bind(inventoryController));
+router.get('/reports/daily', inventoryController.dailyReport.bind(inventoryController));
 
 router.post(
   '/products',

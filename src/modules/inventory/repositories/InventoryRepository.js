@@ -81,6 +81,25 @@ class InventoryRepository {
     return query.getMany();
   }
 
+  findTransactionsByDate(date) {
+    return this.transactionRepository
+      .createQueryBuilder('transaction')
+      .leftJoinAndSelect('transaction.product', 'product')
+      .where('DATE(transaction.createdAt) = :date', { date })
+      .orderBy('transaction.createdAt', 'DESC')
+      .getMany();
+  }
+
+  findLogsByDate(date) {
+    return this.logRepository
+      .createQueryBuilder('log')
+      .leftJoinAndSelect('log.product', 'product')
+      .leftJoinAndSelect('log.user', 'user')
+      .where('DATE(log.createdAt) = :date', { date })
+      .orderBy('log.createdAt', 'DESC')
+      .getMany();
+  }
+
   async findLowStockProducts() {
     return this.productRepository
       .createQueryBuilder('product')
