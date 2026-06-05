@@ -9,7 +9,17 @@ class AuthService {
     this.authRepository = authRepository;
   }
 
+  normalizeEmail(email) {
+    if (typeof email !== 'string') {
+      return '';
+    }
+
+    return email.trim().toLowerCase();
+  }
+
   async register(email, password) {
+    email = this.normalizeEmail(email);
+
     const existingUser = await this.authRepository.findByEmail(email);
 
     if (existingUser) {
@@ -34,6 +44,8 @@ class AuthService {
   }
 
   async login(email, password) {
+    email = this.normalizeEmail(email);
+
     const user = await this.authRepository.findByEmail(email);
 
     if (!user) {

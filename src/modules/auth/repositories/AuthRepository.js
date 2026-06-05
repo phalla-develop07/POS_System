@@ -7,7 +7,10 @@ class AuthRepository extends BaseRepository {
   }
 
   findByEmail(email) {
-    return this.repository.findOne({ where: { email } });
+    return this.repository
+      .createQueryBuilder('user')
+      .where('LOWER(user.email) = LOWER(:email)', { email })
+      .getOne();
   }
 
   createUser(userData) {
