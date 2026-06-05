@@ -24,6 +24,10 @@ const ProductSchema = new EntitySchema({
       scale: 2,
       default: 0
     },
+    stock: {
+      type: 'int',
+      default: 0
+    },
     imageUrl: {
       name: 'image_url',
       type: String,

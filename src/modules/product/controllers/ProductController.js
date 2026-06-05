@@ -28,13 +28,14 @@ class ProductController {
 
   async create(req, res, next) {
     try {
-      const { name, description, price } = req.body;
+      const { name, description, price, stock } = req.body;
       const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
       const product = await this.productService.createProduct({
         name,
         description,
         price: Number(price),
+        stock: Number(stock || 0),
         imageUrl
       });
 
@@ -48,11 +49,12 @@ class ProductController {
     try {
       const productId = Number(req.params.id);
       const existingProduct = await this.productService.getProduct(productId);
-      const { name, description, price } = req.body;
+      const { name, description, price, stock } = req.body;
       const updateData = {
         name: name ?? existingProduct.name,
         description: description ?? existingProduct.description,
-        price: price !== undefined && price !== '' ? Number(price) : existingProduct.price
+        price: price !== undefined && price !== '' ? Number(price) : existingProduct.price,
+        stock: stock !== undefined && stock !== '' ? Number(stock) : existingProduct.stock
       };
 
       if (req.file) {

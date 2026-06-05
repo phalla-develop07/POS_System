@@ -6,12 +6,13 @@ const { UserSchema } = require('../modules/auth/models/User');
 const { ProductSchema } = require('../modules/product/models/Product');
 
 const AppDataSource = new DataSource({
-  type: 'mysql',
-  host: env.DB_HOST,
-  port: env.DB_PORT,
-  username: env.DB_USER,
-  password: env.DB_PASSWORD,
-  database: env.DB_NAME,
+  type: env.DB_TYPE === 'sqlite' ? 'sqlite' : 'mysql',
+  host: env.DB_TYPE === 'sqlite' ? undefined : env.DB_HOST,
+  port: env.DB_TYPE === 'sqlite' ? undefined : env.DB_PORT,
+  username: env.DB_TYPE === 'sqlite' ? undefined : env.DB_USER,
+  password: env.DB_TYPE === 'sqlite' ? undefined : env.DB_PASSWORD,
+  database: env.DB_TYPE === 'sqlite' ? env.DB_PATH : env.DB_NAME,
+  storage: env.DB_TYPE === 'sqlite' ? env.DB_PATH : undefined,
   synchronize: true,
   logging: false,
   entities: [RoleSchema, UserSchema, ProductSchema]
