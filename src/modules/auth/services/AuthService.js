@@ -1,7 +1,7 @@
 const { AppError } = require('../../../core/errors/AppError');
 const { comparePassword, hashPassword } = require('../../../core/utils/hashPassword');
 const { generateToken } = require('../../../core/utils/generateToken');
-const { Roles } = require('../../../constants/roles');
+const { RoleList, Roles } = require('../../../constants/roles');
 const { AuthRepository } = require('../repositories/AuthRepository');
 
 class AuthService {
@@ -9,11 +9,17 @@ class AuthService {
     this.authRepository = authRepository;
   }
 
-  async register(email, password) {
+  async register(email, password, role = Roles.EMPLOYEE) {
     const existingUser = await this.authRepository.findByEmail(email);
 
     if (existingUser) {
       throw new AppError('Email already exists', 409);
+    }
+
+    const normalizedRole = String(role).trim().toUpperCase();
+
+    if (!RoleList.includes(normalizedRole)) {
+      throw new AppError('Invalid role', 400);
     }
 
     const passwordHash = await hashPassword(password);
@@ -21,7 +27,7 @@ class AuthService {
     const user = await this.authRepository.createUser({
       email,
       passwordHash,
-      role: Roles.EMPLOYEE
+      role: normalizedRole
     });
 
     return {
