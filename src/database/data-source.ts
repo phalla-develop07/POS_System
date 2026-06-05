@@ -5,6 +5,8 @@ import { RoleSchema } from '../modules/auth/models/Role';
 import { UserSchema } from '../modules/auth/models/User';
 import { PermissionSchema } from '../modules/permissions/models/Permission';
 import { CategorySchema } from '../modules/category/models/Category.js';
+import { ProductSchema } from '../modules/inventory/models/Product';
+import { InventoryTransactionSchema } from '../modules/inventory/models/InventoryTransaction';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -15,5 +17,5 @@ export const AppDataSource = new DataSource({
   database: env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [RoleSchema, UserSchema, PermissionSchema,CategorySchema]
+  entities: [RoleSchema, UserSchema, PermissionSchema,CategorySchema, ProductSchema, InventoryTransactionSchema]
 });

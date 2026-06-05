@@ -6,6 +6,8 @@ const { UserSchema } = require('../modules/auth/models/User');
 const { PermissionSchema } = require('../modules/permissions/models/Permission');
 const { ProductSchema } = require('../modules/product/models/Product');
 const { CategorySchema } = require('../modules/category/models/Category');
+const { InventoryTransactionSchema } = require('../modules/inventory/models/InventoryTransaction');
+const { InventoryLogSchema } = require('../modules/inventory/models/InventoryLog');
 
 const AppDataSource = new DataSource({
   type: 'mysql',
@@ -16,7 +18,7 @@ const AppDataSource = new DataSource({
   database: env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [RoleSchema, UserSchema, CategorySchema, ProductSchema, PermissionSchema]
+  entities: [RoleSchema, UserSchema, CategorySchema, ProductSchema, PermissionSchema, InventoryTransactionSchema, InventoryLogSchema]
 });
 
 module.exports.AppDataSource = AppDataSource;

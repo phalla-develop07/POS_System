@@ -4,6 +4,7 @@ const permissionsRoutes = require('../modules/permissions/routes/PermissionRoute
 const rolesRoutes = require('../modules/roles/routes/RoleRoutes');
 const productRoutes = require('../modules/product/routes/product.routes');
 const categoryRoutes = require('../modules/category/routes/category.routes');
+const inventoryRoutes = require('../modules/inventory/routes/inventory.routes');
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use('/permissions', permissionsRoutes);
 router.use('/roles', rolesRoutes);
 router.use('/products', productRoutes);
 router.use('/categories', categoryRoutes);
+router.use('/inventory', inventoryRoutes);
 
 module.exports = router;

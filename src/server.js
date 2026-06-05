@@ -35,6 +35,14 @@ async function bootstrap() {
     });
   } catch (error) {
     console.error('Failed to start server:', error);
+    console.log('Database connected successfully');
+    console.log(' Tables synchronized from entities');
+    
+    app.listen(env.PORT, () => {
+      console.log(`Server is running on port ${env.PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error.message);
     process.exit(1);
   }
 }

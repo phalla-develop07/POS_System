@@ -14,6 +14,13 @@ function authMiddleware(req, _res, next) {
   if (!scheme || scheme.toLowerCase() !== 'bearer' || !token) {
     return next(new AppError('Unauthorized', 401));
   }
+  const header = req.headers.authorization;
+
+  if (!header || !header.startsWith('Bearer ')) {
+    return next(new AppError('Unauthorized', 401));
+  }
+
+  const token = header.slice(7);
 
   try {
     const payload = jwt.verify(token, jwtConfig.secret);

@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const routes = require('./routes');
 const { AppError } = require('./core/errors/AppError');
+const routes = require('./routes');
 const { errorHandler } = require('./middlewares/error.middleware');
 
 const app = express();
@@ -19,6 +20,8 @@ app.use('/api', routes);
 app.use((req, _res, next) => {
   next(new AppError(`Route ${req.originalUrl} not found`, 404));
 });
+
+app.use('/api', routes);
 app.use(errorHandler);
 
 module.exports = app;

@@ -9,3 +9,6 @@ module.exports.RoleDescriptions = {
 };
 
 module.exports.RoleList = Object.values(module.exports.Roles);
+  CASHIER: 'CASHIER',
+  MANAGER: 'MANAGER'
+};

@@ -127,4 +127,8 @@ module.exports.RolePermissions = {
     module.exports.Permissions.VIEW_INVENTORY,
     module.exports.Permissions.VIEW_ORDERS
   ]
+  MANAGE_USERS: 'MANAGE_USERS',
+  MANAGE_PRODUCTS: 'MANAGE_PRODUCTS',
+  MANAGE_SALES: 'MANAGE_SALES',
+  VIEW_REPORTS: 'VIEW_REPORTS'
 };
