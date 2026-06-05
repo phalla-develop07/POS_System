@@ -2,6 +2,7 @@ const { Router } = require('express');
 const authRoutes = require('../modules/auth/routes/auth.routes');
 const permissionsRoutes = require('../modules/permissions/routes/PermissionRoutes');
 const rolesRoutes = require('../modules/roles/routes/RoleRoutes');
+const productRoutes = require('../modules/product/routes/product.routes');
 
 const router = Router();
 
@@ -10,7 +11,8 @@ router.get('/', (_req, res) => {
 });
 
 router.use('/auth', authRoutes);
-router.use('/roles', rolesRoutes);
 router.use('/permissions', permissionsRoutes);
+router.use('/roles', rolesRoutes);
+router.use('/products', productRoutes);
 
 module.exports = router;

@@ -4,6 +4,7 @@ const { env } = require('../config/env');
 const { RoleSchema } = require('../modules/auth/models/Role');
 const { UserSchema } = require('../modules/auth/models/User');
 const { PermissionSchema } = require('../modules/permissions/models/Permission');
+const { ProductSchema } = require('../modules/product/models/Product');
 
 const AppDataSource = new DataSource({
   type: 'mysql',
@@ -14,7 +15,7 @@ const AppDataSource = new DataSource({
   database: env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [RoleSchema, UserSchema, PermissionSchema]
+  entities: [RoleSchema, UserSchema]
 });
 
 module.exports.AppDataSource = AppDataSource;
