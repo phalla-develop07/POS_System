@@ -33,7 +33,7 @@ const dataSourceOptions: DataSourceOptions = env.DB_TYPE === 'sqlite'
     }
   : {
       ...commonOptions,
-      type: 'mysql',
+      type: 'postgres',
       host: env.DB_HOST,
       port: env.DB_PORT,
       username: env.DB_USER,
