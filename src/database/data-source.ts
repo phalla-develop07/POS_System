@@ -1,19 +1,48 @@
 import 'reflect-metadata';
-import { DataSource } from 'typeorm';
+import { DataSource, type DataSourceOptions } from 'typeorm';
 import { env } from '../config/env';
 import { RoleSchema } from '../modules/auth/models/Role';
 import { UserSchema } from '../modules/auth/models/User';
 import { PermissionSchema } from '../modules/permissions/models/Permission';
-import { CategorySchema } from '../modules/category/models/Category.js';
+import { ProductSchema } from '../modules/product/models/Product';
+import { CategorySchema } from '../modules/category/models/Category';
+import { InventoryTransactionSchema } from '../modules/inventory/models/InventoryTransaction';
+import { InventoryLogSchema } from '../modules/inventory/models/InventoryLog';
+import { SaleSchema } from '../modules/sales/models/Sale';
+import { SaleItemSchema } from '../modules/sales/models/SaleItem';
 
-export const AppDataSource = new DataSource({
-  type: 'mysql',
-  host: env.DB_HOST,
-  port: env.DB_PORT,
-  username: env.DB_USER,
-  password: env.DB_PASSWORD,
-  database: env.DB_NAME,
+const entities = [
+  RoleSchema,
+  UserSchema,
+  CategorySchema,
+  ProductSchema,
+  PermissionSchema,
+  InventoryTransactionSchema,
+  InventoryLogSchema,
+  SaleSchema,
+  SaleItemSchema
+];
+
+const commonOptions = {
   synchronize: true,
   logging: false,
-  entities: [RoleSchema, UserSchema, PermissionSchema,CategorySchema]
-});
+  entities
+};
+
+const dataSourceOptions: DataSourceOptions = env.DB_TYPE === 'sqlite'
+  ? {
+      ...commonOptions,
+      type: 'sqlite',
+      database: env.DB_PATH
+    }
+  : {
+      ...commonOptions,
+      type: 'mysql',
+      host: env.DB_HOST,
+      port: env.DB_PORT,
+      username: env.DB_USER,
+      password: env.DB_PASSWORD,
+      database: env.DB_NAME
+    };
+
+export const AppDataSource = new DataSource(dataSourceOptions);
